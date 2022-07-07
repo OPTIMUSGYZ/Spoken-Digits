@@ -1,3 +1,4 @@
+# ignore this file
 import os
 
 people = [12, 26, 28, 36, 43, 47, 52, 56, 57, 58, 59, 60]
