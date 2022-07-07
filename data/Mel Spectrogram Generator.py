@@ -28,7 +28,7 @@ def generate(person, digit):
 
 
 ##################################
-person = 1  # person's index
+person = 2  # person's index
 ##################################
 
 for i in range(10):
