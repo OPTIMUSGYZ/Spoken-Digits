@@ -6,6 +6,13 @@ import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
 
+##################################
+
+
+person = 3  # person's index
+
+
+##################################
 
 def generate(person, digit):
     for i in range(10):
@@ -27,9 +34,5 @@ def generate(person, digit):
         plt.close()
 
 
-##################################
-person = 2  # person's index
-##################################
-
 for i in range(10):
-    generate(person,i)
+    generate(person, i)
