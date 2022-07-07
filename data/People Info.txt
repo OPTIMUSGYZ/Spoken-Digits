@@ -10,3 +10,17 @@
 9: Female, German, #58 from audioMNIST dataset
 10: Female, German, #59 from audioMNIST dataset
 11: Female, Tamil, #60 from audioMNIST dataset
+12: Male, South Korean, #09 from audioMNIST dataset
+13: Male, Spanish, #14 from audioMNIST dataset
+14: Male, Madras, #15 from audioMNIST dataset
+15: Male, Levant, #18 from audioMNIST dataset
+16: Male, English, #19 from audioMNIST dataset
+17: Male, Chinese, #24 from audioMNIST dataset
+18: Male, Brazilian, #25 from audioMNIST dataset
+19: Male, Italian, #27 from audioMNIST dataset
+20: Male, Egyptian_American?, #32 from audioMNIST dataset
+21: Male, Chinese, #35 from audioMNIST dataset
+22: Male, Italian, #37 from audioMNIST dataset
+23: Male, Spanish, #38 from audioMNIST dataset
+24: Male, South African, #41 from audioMNIST dataset
+25: Male, Arabic, #42 from audioMNIST dataset
