@@ -1,0 +1,12 @@
+0: Female, German, #12 from audioMNIST dataset
+1: Female, Chinese, #26 from audioMNIST dataset
+2: Female, German, #28 from audioMNIST dataset
+3: Female, German, #36 from audioMNIST dataset
+4: Female, German, #43 from audioMNIST dataset
+5: Female, Danish, #47 from audioMNIST dataset
+6: Female, French, #52 from audioMNIST dataset
+7: Female, German, #56 from audioMNIST dataset
+8: Female, German, #57 from audioMNIST dataset
+9: Female, German, #58 from audioMNIST dataset
+10: Female, German, #59 from audioMNIST dataset
+11: Female, Tamil, #60 from audioMNIST dataset
