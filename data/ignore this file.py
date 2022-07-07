@@ -15,14 +15,17 @@ for p in people:
 # 9,14,15,18,19,24,25,27,32,35,37,38,41,42
 import shutil
 
-person = 9
-p = 12
-for digit in range(10):
-    for idx in range(10):
-        if person < 10:
-            file = "/Users/gyz/Downloads/AudioMNIST-master/data/0{}/{}_0{}_{}.wav".format(person, digit, person, idx)
-        else:
-            file = "/Users/gyz/Downloads/AudioMNIST-master/data/{}/{}_{}_{}.wav".format(person, digit, person, idx)
-        output = "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/audio/{}/{}_{}.wav".format(
-            digit, p, idx)
-        shutil.copyfile(file, output)
+people = [14, 15, 18, 19, 24, 25, 27, 32, 35, 37, 38, 41, 42]
+p = 13  # start
+for person in people:
+    for digit in range(10):
+        for idx in range(10):
+            if person < 10:
+                file = "/Users/gyz/Downloads/AudioMNIST-master/data/0{}/{}_0{}_{}.wav".format(person, digit, person,
+                                                                                              idx)
+            else:
+                file = "/Users/gyz/Downloads/AudioMNIST-master/data/{}/{}_{}_{}.wav".format(person, digit, person, idx)
+            output = "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/audio/{}/{}_{}.wav".format(
+                digit, p, idx)
+            shutil.copyfile(file, output)
+    p += 1

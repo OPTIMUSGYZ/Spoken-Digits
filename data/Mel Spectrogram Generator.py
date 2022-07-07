@@ -1,7 +1,4 @@
 # For generating mel spectrogram from an audio file
-
-# since GitHub only allows 100 files being uploaded at once,
-# this will generate the spectrograms of a single person's 100 recording
 import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,7 +6,7 @@ import numpy as np
 ##################################
 
 
-person = 11  # person's index
+nPeople = 26  # total number of people
 
 
 ##################################
@@ -34,5 +31,6 @@ def generate(person, digit):
         plt.close()
 
 
-for i in range(10):
-    generate(person, i)
+for idxPerson in range(nPeople):
+    for d in range(10):
+        generate(idxPerson, d)
