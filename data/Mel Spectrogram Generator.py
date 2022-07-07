@@ -24,6 +24,7 @@ def generate(person, digit):
         melSpecImg = librosa.display.specshow(melSpec)
         imgPath = "./mel_spectrogram/{}/{}_{}.jpg".format(digit, person, i)
         plt.savefig(imgPath)
+        plt.close()
 
 
 ##################################
