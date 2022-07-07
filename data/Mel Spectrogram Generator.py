@@ -9,15 +9,15 @@ import numpy as np
 ##################################
 
 
-person = 3  # person's index
+person = 4  # person's index
 
 
 ##################################
 
 def generate(person, digit):
-    for i in range(10):
+    for n in range(10):
         # load file
-        file = "./audio/{}/{}_{}.wav".format(digit, person, i)
+        file = "./audio/{}/{}_{}.wav".format(digit, person, n)
         signal, sampleRate = librosa.load(file)
 
         melSpec = librosa.feature.melspectrogram(y=signal, sr=sampleRate,
@@ -29,7 +29,7 @@ def generate(person, digit):
         ax.axis('off')
         # save mel spectrogram as jpg
         melSpecImg = librosa.display.specshow(melSpec)
-        imgPath = "./mel_spectrogram/{}/{}_{}.jpg".format(digit, person, i)
+        imgPath = "./mel_spectrogram/{}/{}_{}.jpg".format(digit, person, n)
         plt.savefig(imgPath)
         plt.close()
 
