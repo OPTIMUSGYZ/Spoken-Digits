@@ -9,7 +9,7 @@ import numpy as np
 ##################################
 
 
-person = 8  # person's index
+person = 9  # person's index
 
 
 ##################################
