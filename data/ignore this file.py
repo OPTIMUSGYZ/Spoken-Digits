@@ -29,17 +29,35 @@ for person in people:
 import random
 nPeople = 28
 data = []
+dataDir = "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/mel_spectrogram/"
 for n in range(10):
     data.append([])
     for i in range(nPeople):
         for j in range(10):
-            data[n].append(
-                "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/mel_spectrogram/{}/{}_{}.jpg".format(
-                    n, i, j))
+            data[n].append("{}/{}_{}.jpg".format(n, i, j))
 train,val,test = [],[],[]
 for d in data:
-    for i in range(int(len(d)*0.7)):
+    ld = len(d)
+    for i in range(int(ld*0.7)):
         n = random.randint(0,len(d)-1)
         train.append(d[n])
         d.pop(n)
-    print(d)
+    for i in range(int(ld*0.15)):
+        n = random.randint(0,len(d)-1)
+        val.append(d[n])
+        d.pop(n)
+    for i in d:
+        test.append(i)
+for file in train:
+    fromLoc = dataDir+file
+    toLoc = dataDir+"train/"+file
+    shutil.copyfile(fromLoc, toLoc)
+for file in val:
+    fromLoc = dataDir+file
+    toLoc = dataDir+"val/"+file
+    shutil.copyfile(fromLoc, toLoc)
+for file in test:
+    fromLoc = dataDir+file
+    toLoc = dataDir+"test/"+file
+    shutil.copyfile(fromLoc, toLoc)
+print(len(train),len(val),len(test))
