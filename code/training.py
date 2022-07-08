@@ -18,7 +18,7 @@ import CNN_Model
 import data_loading
 
 torch.manual_seed(1)  # set the random seed
-use_cuda = True
+use_cuda = False
 
 
 def get_model_name(name, batch_size, learning_rate, epoch):
@@ -60,6 +60,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     torch.manual_seed(1000)
 
     iters, losses, train_acc, val_acc = [], [], [], []
+    epochs = range(num_epochs)
 
     # training
     n = 0  # the number of iterations
@@ -113,8 +114,8 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
 
     # plotting training curve of training accuracy and iterations
     plt.title("Training Curve")
-    plt.plot(num_epochs, train_acc, label="Train")
-    plt.plot(num_epochs, val_acc, label="Validation")
+    plt.plot(epochs, train_acc, label="Train")
+    plt.plot(epochs, val_acc, label="Validation")
     plt.xlabel("Epochs")
     plt.ylabel("Training Accuracy")
     plt.legend(loc='best')
@@ -131,6 +132,7 @@ def start_training():
         torch.cuda.empty_cache()
         CNN.cuda()
         print("Training on GPU...")
-    train(CNN, train_data, val_data, batch_size=128, learning_rate=0.001, num_epochs=5)
+    train(CNN, train_data, val_data, batch_size=256, learning_rate=0.001, num_epochs=8)
+
 
 start_training()
