@@ -132,3 +132,5 @@ def start_training():
         CNN.cuda()
         print("Training on GPU...")
     train(CNN, train_data, val_data, batch_size=128, learning_rate=0.001, num_epochs=5)
+
+start_training()

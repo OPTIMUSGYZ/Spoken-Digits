@@ -9,7 +9,7 @@ from torchvision import datasets, transforms
 
 def load_data():
     # define training and test data directories
-    data_dir = '/content/drive/MyDrive/APS360/data/mel_spectrogram/'
+    data_dir = '../data/mel_spectrogram/'
     # print("Current working directory: {0}".format(os.path.isdir(data_dir)))
 
     # Data are separated into  around 10% test, 10% validation, and 80% training
