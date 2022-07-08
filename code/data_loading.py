@@ -53,3 +53,4 @@ def load_data():
                                               num_workers=num_workers, shuffle=True)
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size,
                                               num_workers=num_workers, shuffle=True)
+    return train_data, val_data

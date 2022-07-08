@@ -14,6 +14,8 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt  # for plotting
 import torch.optim as optim  # for gradient descent
 import time
+import CNN_Model
+import data_loading
 
 torch.manual_seed(1)  # set the random seed
 use_cuda = True
@@ -112,3 +114,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
 
     print("Final Training Accuracy: {}".format(train_acc[-1]))
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
+
+train_data,val_data = data_loading.load_data()
+CNN = CNN_Model.CNN_Spoken_Digit()
+train(CNN, train_data, val_data, 10, 0.01, 2)
