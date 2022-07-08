@@ -6,7 +6,8 @@ import numpy as np
 ##################################
 
 
-nPeople = 26  # total number of people
+p1 = 26  # start person index
+p2 = 27  # end person index
 
 
 ##################################
@@ -31,6 +32,6 @@ def generate(person, digit):
         plt.close()
 
 
-for idxPerson in range(nPeople):
+for idxPerson in range(p1, p2 + 1):
     for d in range(10):
         generate(idxPerson, d)

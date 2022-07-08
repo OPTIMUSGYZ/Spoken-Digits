@@ -24,3 +24,5 @@
 23: Male, Spanish, #38 from audioMNIST dataset
 24: Male, South African, #41 from audioMNIST dataset
 25: Male, Arabic, #42 from audioMNIST dataset
+26: Female, Chinese, member of our group
+27: Female, Chinese, member of our group
