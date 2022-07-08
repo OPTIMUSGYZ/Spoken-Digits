@@ -124,10 +124,11 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
 
 
-train_data, val_data = data_loading.load_data()
-CNN = CNN_Model.CNN_Spoken_Digit()
-if use_cuda and torch.cuda.is_available():
-    torch.cuda.empty_cache()
-    CNN.cuda()
-    print("Training on GPU...")
-train(CNN, train_data, val_data, batch_size=128, learning_rate=0.001, num_epochs=5)
+def start_training():
+    train_data, val_data = data_loading.load_data()
+    CNN = CNN_Model.CNN_Spoken_Digit()
+    if use_cuda and torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        CNN.cuda()
+        print("Training on GPU...")
+    train(CNN, train_data, val_data, batch_size=128, learning_rate=0.001, num_epochs=5)
