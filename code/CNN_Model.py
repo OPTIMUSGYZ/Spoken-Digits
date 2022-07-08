@@ -1,8 +1,9 @@
-#This file contains a CNN model
-import torch.nn as nn
+# This file contains a CNN model
 import math
+
+import torch.nn as nn
 import torch.nn.functional as F
-import data_loading
+
 
 # Convolutional Neural Network Architecture
 class CNN_Spoken_Digit(nn.Module):
@@ -14,9 +15,9 @@ class CNN_Spoken_Digit(nn.Module):
         if kernels is None:
             kernels = [7, 5, 3]
 
-
         # define convolutional layers and batch normalization layers
-        self.conv1 = nn.Conv2d(channels[0], channels[1], kernels[0])  # in_channels (coloured images), out_chanels, kernel_size
+        self.conv1 = nn.Conv2d(channels[0], channels[1],
+                               kernels[0])  # in_channels (coloured images), out_chanels, kernel_size
         self.batchNorm1 = nn.BatchNorm2d(channels[1])
         self.conv2 = nn.Conv2d(channels[1], channels[2], kernels[1])  # in_channels, out_chanels, kernel_size
         self.batchNorm2 = nn.BatchNorm2d(channels[2])
@@ -26,8 +27,8 @@ class CNN_Spoken_Digit(nn.Module):
         self.pool = nn.MaxPool2d(ker_pool, stride)  # kernel_size, stride
 
         # compute the input features
-        self.conv1_channel_x= math.floor(640-kernels[0]+1)
-        self.pool1_channel_x = math.floor((self.conv1_channel_x - ker_pool)/stride + 1)
+        self.conv1_channel_x = math.floor(640 - kernels[0] + 1)
+        self.pool1_channel_x = math.floor((self.conv1_channel_x - ker_pool) / stride + 1)
         self.conv2_channel_x = math.floor(self.pool1_channel_x - kernels[1] + 1)
         self.pool2_channel_x = math.floor((self.conv2_channel_x - ker_pool) / stride + 1)
         self.conv3_channel_x = math.floor(self.pool2_channel_x - kernels[2] + 1)
@@ -41,8 +42,8 @@ class CNN_Spoken_Digit(nn.Module):
         self.conv3_channel_y = math.floor(self.pool2_channel_y - kernels[2] + 1)
         self.pool3_channel_y = math.floor((self.conv3_channel_y - ker_pool) / stride + 1)
 
-        self.in_features = self.pool3_channel_x * self.pool3_channel_y*channels[3]
-        
+        self.in_features = self.pool3_channel_x * self.pool3_channel_y * channels[3]
+
         # define fully connected layers
         self.fc1 = nn.Linear(self.in_features, 64)
         self.fc2 = nn.Linear(64, 10)  # 10 outputs

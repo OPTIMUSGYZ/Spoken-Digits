@@ -7,13 +7,13 @@ Original file is located at
     https://colab.research.google.com/drive/1q8ieC63Q8GcNLaSSzVC4bwJFFo5Qj9KX
 """
 
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+import time
 
 import matplotlib.pyplot as plt  # for plotting
+import torch
+import torch.nn as nn
 import torch.optim as optim  # for gradient descent
-import time
+
 import CNN_Model
 import data_loading
 
@@ -35,6 +35,13 @@ def get_accuracy(model, dataloader):
     correct = 0
     total = 0
     for imgs, labels in dataloader:
+        #############################################
+        # To Enable GPU Usage
+        if use_cuda and torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            imgs = imgs.cuda()
+            labels = labels.cuda()
+        #############################################
         output = model(imgs)
 
         # select index with maximum prediction score
@@ -64,6 +71,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
             #############################################
             # To Enable GPU Usage
             if use_cuda and torch.cuda.is_available():
+                torch.cuda.empty_cache()
                 imgs = imgs.cuda()
                 labels = labels.cuda()
             #############################################
@@ -83,7 +91,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
         train_acc.append(get_accuracy(model, train_loader))  # compute training accuracy
         val_acc.append(get_accuracy(model, val_loader))  # compute validation accuracy
 
-        print(("Epoch {}: Train acc: {} Validation acc: {}").format(
+        print("Epoch {}: Train acc: {} Validation acc: {}".format(
             epoch + 1,
             train_acc[-1],
             val_acc[-1]))
@@ -115,6 +123,10 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     print("Final Training Accuracy: {}".format(train_acc[-1]))
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
 
-train_data,val_data = data_loading.load_data()
+
+train_data, val_data = data_loading.load_data()
 CNN = CNN_Model.CNN_Spoken_Digit()
-train(CNN, train_data, val_data, 10, 0.01, 2)
+if use_cuda and torch.cuda.is_available():
+    torch.cuda.empty_cache()
+    CNN.cuda()
+train(CNN, train_data, val_data, batch_size=128, learning_rate=0.001, num_epochs=5)
