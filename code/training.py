@@ -129,4 +129,5 @@ CNN = CNN_Model.CNN_Spoken_Digit()
 if use_cuda and torch.cuda.is_available():
     torch.cuda.empty_cache()
     CNN.cuda()
+    print("Training on GPU...")
 train(CNN, train_data, val_data, batch_size=128, learning_rate=0.001, num_epochs=5)
