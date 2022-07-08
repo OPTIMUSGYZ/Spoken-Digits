@@ -26,4 +26,20 @@ for person in people:
             shutil.copyfile(file, output)
     p += 1
 """
-
+import random
+nPeople = 28
+data = []
+for n in range(10):
+    data.append([])
+    for i in range(nPeople):
+        for j in range(10):
+            data[n].append(
+                "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/mel_spectrogram/{}/{}_{}.jpg".format(
+                    n, i, j))
+train,val,test = [],[],[]
+for d in data:
+    for i in range(int(len(d)*0.7)):
+        n = random.randint(0,len(d)-1)
+        train.append(d[n])
+        d.pop(n)
+    print(d)
