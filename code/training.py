@@ -127,14 +127,14 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
 
 
-def start_training():
+def start_training(batch_size, lr, epoch):
     train_data, val_data = data_loading.load_train_val_data()
     CNN = CNN_Model.CNN_Spoken_Digit()
     if use_cuda and torch.cuda.is_available():
         torch.cuda.empty_cache()
         CNN.cuda()
         print("Training on GPU...")
-    train(CNN, train_data, val_data, batch_size=256, learning_rate=0.001, num_epochs=8)
+    train(CNN, train_data, val_data, batch_size, lr, epoch)
 
 
 def show_model_test_accuracy(bs, lr, epoch):
@@ -148,10 +148,14 @@ def show_model_test_accuracy(bs, lr, epoch):
 
 
 #################
-train_mode = False
+train_mode = True
 #################
 
-if train_mode:
-    start_training()
+batch_size = 256
+lr = 0.00049
+epoch = 8
 
-show_model_test_accuracy(256, 0.001, 7)
+if train_mode:
+    start_training(batch_size, lr, epoch)
+
+show_model_test_accuracy(batch_size, lr, epoch - 1) # default load to last epoch
