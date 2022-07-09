@@ -111,7 +111,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.xlabel("Iterations")
     plt.ylabel("Loss")
     plt.show()
-    plt.savefig("./plots/model_{}_{}_{}_Train_Loss.png".format(model.name, batch_size, learning_rate))
+    plt.savefig("./models/plots/model_{}_{}_{}_Train_Loss.png".format(model.name, batch_size, learning_rate))
 
     # plotting training curve of training accuracy and iterations
     plt.title("Training Curve")
@@ -121,7 +121,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.ylabel("Training Accuracy")
     plt.legend(loc='best')
     plt.show()
-    plt.savefig("./plots/model_{}_{}_{}_Train_Val_Accuracy.png".format(model.name, batch_size, learning_rate))
+    plt.savefig("./models/plots/model_{}_{}_{}_Train_Val_Accuracy.png".format(model.name, batch_size, learning_rate))
 
     print("Final Training Accuracy: {}".format(train_acc[-1]))
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
@@ -148,14 +148,14 @@ def show_model_test_accuracy(bs, lr, epoch):
 
 
 #################
-train_mode = True
+train_mode = False
 #################
 
 batch_size = 256
-lr = 0.00049
-epoch = 8
+lr = 0.00048
+epoch = 10
 
 if train_mode:
     start_training(batch_size, lr, epoch)
 
-show_model_test_accuracy(batch_size, lr, epoch - 1) # default load to last epoch
+show_model_test_accuracy(batch_size, lr, epoch - 1)  # default load to last epoch
