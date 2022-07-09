@@ -151,8 +151,8 @@ def show_model_test_accuracy(bs, lr, epoch):
 train_mode = True
 #################
 
-batch_size = 256
-lr = 0.00048
+batch_size = 128
+lr = 0.0005
 epoch = 10
 
 if train_mode:
