@@ -52,8 +52,8 @@ def get_accuracy(model, dataloader):
 
 
 def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epochs=30):
-    train_loader = torch.utils.data.DataLoader(trainData, batch_size=batch_size)
-    val_loader = torch.utils.data.DataLoader(valData, batch_size=batch_size)
+    train_loader = torch.utils.data.DataLoader(trainData, batch_size=batch_size, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(valData, batch_size=batch_size, shuffle=True)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
 
@@ -142,13 +142,13 @@ def show_model_test_accuracy(bs, lr, epoch):
     modelPath = "./models/state_dict/" + str(get_model_name("CNN_Spoken_Digit", bs, lr, epoch))
     state = torch.load(modelPath)
     model.load_state_dict(state)
-    testLoader = data_loading.lad_test_data_loader()
+    testLoader = data_loading.load_test_data_loader()
     acc = get_accuracy(model, testLoader)
     print("{} with bs={} lr={} epoch={} test accuracy: {}".format(model.name, bs, lr, epoch, acc))
 
 
 #################
-train_mode = False
+train_mode = True
 #################
 
 batch_size = 256

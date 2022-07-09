@@ -43,7 +43,7 @@ def load_train_val_data():
     return train_data, val_data
 
 
-def lad_test_data_loader():
+def load_test_data_loader():
     # define training and test data directories
     data_dir = '../data/mel_spectrogram/'
     test_dir = os.path.join(data_dir, 'test/')  # test directory
