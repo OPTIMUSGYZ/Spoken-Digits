@@ -97,7 +97,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
             train_acc[-1],
             val_acc[-1]))
 
-        model_path = get_model_name(model.name, batch_size, learning_rate, epoch)
+        model_path = "./models/state_dict/" + str(get_model_name(model.name, batch_size, learning_rate, epoch))
         torch.save(model.state_dict(), model_path)
 
     print('Finished Training')
@@ -111,7 +111,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.xlabel("Iterations")
     plt.ylabel("Loss")
     plt.show()
-    plt.savefig("./model_{}_{}_{}_Train_Loss.png".format(model.name, batch_size, learning_rate))
+    plt.savefig("./plots/model_{}_{}_{}_Train_Loss.png".format(model.name, batch_size, learning_rate))
 
     # plotting training curve of training accuracy and iterations
     plt.title("Training Curve")
@@ -121,7 +121,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.ylabel("Training Accuracy")
     plt.legend(loc='best')
     plt.show()
-    plt.savefig("./model_{}_{}_{}_Train_Val_Accuracy.png".format(model.name, batch_size, learning_rate))
+    plt.savefig("./plots/model_{}_{}_{}_Train_Val_Accuracy.png".format(model.name, batch_size, learning_rate))
 
     print("Final Training Accuracy: {}".format(train_acc[-1]))
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
@@ -139,7 +139,7 @@ def start_training():
 
 def show_model_test_accuracy(bs, lr, epoch):
     model = CNN_Model.CNN_Spoken_Digit()
-    modelPath = get_model_name("CNN_Spoken_Digit", bs, lr, epoch)
+    modelPath = "./models/state_dict/" + str(get_model_name("CNN_Spoken_Digit", bs, lr, epoch))
     state = torch.load(modelPath)
     model.load_state_dict(state)
     testLoader = data_loading.lad_test_data_loader()
