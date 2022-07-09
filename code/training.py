@@ -110,8 +110,8 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.plot(iters, losses, label="Train")
     plt.xlabel("Iterations")
     plt.ylabel("Loss")
-    plt.show()
     plt.savefig("./models/plots/model_{}_{}_{}_Train_Loss.png".format(model.name, batch_size, learning_rate))
+    plt.show()
 
     # plotting training curve of training accuracy and iterations
     plt.title("Training Curve")
@@ -120,8 +120,8 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.xlabel("Epochs")
     plt.ylabel("Training Accuracy")
     plt.legend(loc='best')
-    plt.show()
     plt.savefig("./models/plots/model_{}_{}_{}_Train_Val_Accuracy.png".format(model.name, batch_size, learning_rate))
+    plt.show()
 
     print("Final Training Accuracy: {}".format(train_acc[-1]))
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
