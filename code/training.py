@@ -51,9 +51,119 @@ def get_accuracy(model, dataloader):
     return correct / total
 
 
+# This function also calculates the accuracy for each letter
+def get_each_accuracy(model, dataloader):
+    Zero_correct = 0
+    Zero_total = 0
+    One_correct = 0
+    One_total = 0
+    Two_correct = 0
+    Two_total = 0
+    Three_correct = 0
+    Three_total = 0
+    Four_correct = 0
+    Four_total = 0
+    Five_correct = 0
+    Five_total = 0
+    Six_correct = 0
+    Six_total = 0
+    Seven_correct = 0
+    Seven_total = 0
+    Eight_correct = 0
+    Eight_total = 0
+    Nine_correct = 0
+    Nine_total = 0
+    correct = 0
+    total = 0
+
+    classes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    for imgs, labels in dataloader:
+
+        output = model(imgs)
+
+        # select index with maximum prediction score
+        pred = output.max(1, keepdim=True)[1]
+
+
+        if (str(classes[labels[0]]) == '0'):
+            Zero_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Zero_total += imgs.shape[0]
+
+
+        elif (str(classes[labels[0]]) == '1'):
+            One_correct += pred.eq(labels.view_as(pred)).sum().item()
+            One_total += imgs.shape[0]
+
+
+        elif (str(classes[labels[0]]) == '2'):
+            Two_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Two_total += imgs.shape[0]
+
+
+        elif (str(classes[labels[0]]) == '3'):
+            Three_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Three_total += imgs.shape[0]
+
+
+        elif (str(classes[labels[0]]) == '4'):
+            Four_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Four_total += imgs.shape[0]
+
+
+        elif (str(classes[labels[0]]) == '5'):
+            Five_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Five_total += imgs.shape[0]
+
+
+        elif (str(classes[labels[0]]) == '6'):
+            Six_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Six_total += imgs.shape[0]
+
+
+        elif (str(classes[labels[0]]) == '7'):
+            Seven_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Seven_total += imgs.shape[0]
+
+        elif (str(classes[labels[0]]) == '8'):
+            Eight_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Eight_total += imgs.shape[0]
+
+        elif (str(classes[labels[0]]) == '9'):
+            Nine_correct += pred.eq(labels.view_as(pred)).sum().item()
+            Nine_total += imgs.shape[0]
+
+        correct += pred.eq(labels.view_as(pred)).sum().item()
+        total += imgs.shape[0]
+
+    if (Zero_total != 0):
+        print("Accuracy for 0: ", Zero_correct / Zero_total)
+    if (One_total != 0):
+        print("Accuracy for 1: ", One_correct / One_total)
+    if (Two_total != 0):
+        print("Accuracy for 2: ", Two_correct / Two_total)
+    if (Three_total != 0):
+        print("Accuracy for 3: ", Three_correct / Three_total)
+    if (Four_total != 0):
+        print("Accuracy for 4: ", Four_correct / Four_total)
+    if (Five_total != 0):
+        print("Accuracy for 5: ", Five_correct / Five_total)
+    if (Six_total != 0):
+        print("Accuracy for 6: ", Six_correct / Six_total)
+    if (Seven_total != 0):
+        print("Accuracy for 7: ", Seven_correct / Seven_total)
+    if (Eight_total != 0):
+        print("Accuracy for 8: ", Eight_correct / Eight_total)
+    if (Nine_total != 0):
+        print("Accuracy for 9: ", Nine_correct / Nine_total)
+    print("Total Accuracy: ", correct / total)
+
+    return correct / total
+
+
 def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epochs=30):
-    train_loader = torch.utils.data.DataLoader(trainData, batch_size=batch_size, shuffle=True)
-    val_loader = torch.utils.data.DataLoader(valData, batch_size=batch_size, shuffle=True)
+    train_loader = torch.utils.data.DataLoader(trainData, batch_size=batch_size, shuffle=False)
+    val_loader = torch.utils.data.DataLoader(valData, batch_size=batch_size, shuffle=False)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
 
@@ -143,17 +253,17 @@ def show_model_test_accuracy(bs, lr, epoch):
     state = torch.load(modelPath)
     model.load_state_dict(state)
     testLoader = data_loading.load_test_data_loader()
-    acc = get_accuracy(model, testLoader)
+    acc = get_each_accuracy(model, testLoader)
     print("{} with bs={} lr={} epoch={} test accuracy: {}".format(model.name, bs, lr, epoch, acc))
 
 
 #################
-train_mode = True
+train_mode = False
 #################
 
-batch_size = 128
-lr = 0.0005
-epoch = 10
+batch_size = 256
+lr = 0.00049
+epoch = 8
 
 if train_mode:
     start_training(batch_size, lr, epoch)

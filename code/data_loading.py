@@ -37,9 +37,9 @@ def load_train_val_data():
 
     # prepare data loaders with iterable
     train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size,
-                                               num_workers=num_workers, shuffle=True)
+                                               num_workers=num_workers, shuffle=False)
     val_loader = torch.utils.data.DataLoader(val_data, batch_size=batch_size,
-                                             num_workers=num_workers, shuffle=True)
+                                             num_workers=num_workers, shuffle=False)
     return train_data, val_data
 
 
@@ -54,5 +54,5 @@ def load_test_data_loader():
     batch_size = 32
     num_workers = 0
     test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size,
-                                              num_workers=num_workers, shuffle=True)
+                                              num_workers=num_workers, shuffle=False)
     return test_loader
