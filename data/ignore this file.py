@@ -26,17 +26,34 @@ for person in people:
             shutil.copyfile(file, output)
     p += 1
 """
+
 import random
 nPeople = 28
+people = list(range(28))
 data = []
 dataDir = "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/mel_spectrogram/"
-for n in range(10):
+
+for n in range(nPeople):
     data.append([])
-    for i in range(nPeople):
+    for i in range(10):
         for j in range(10):
-            data[n].append("{}/{}_{}.jpg".format(n, i, j))
+            data[n].append("{}/{}_{}.jpg".format(i, n, j))
 train,val,test = [],[],[]
-for d in data:
+tr,va,te = 7,2,1
+tr = round(nPeople*tr/10)
+va = round(nPeople*va/10)
+print(tr,va)
+for i in range(tr):
+    n = random.randint(0,len(people)-1)
+    train.append(data[people[n]])
+    people.pop(n)
+for i in range(va):
+    n = random.randint(0,len(people)-1)
+    val.append(data[people[n]])
+    people.pop(n)
+for i in people:
+    test.append(data[i])
+"""for d in data:
     ld = len(d)
     for i in range(int(ld*0.7)):
         n = random.randint(0,len(d)-1)
@@ -47,17 +64,22 @@ for d in data:
         val.append(d[n])
         d.pop(n)
     for i in d:
-        test.append(i)
-for file in train:
-    fromLoc = dataDir+file
-    toLoc = dataDir+"train/"+file
-    shutil.copyfile(fromLoc, toLoc)
-for file in val:
-    fromLoc = dataDir+file
-    toLoc = dataDir+"val/"+file
-    shutil.copyfile(fromLoc, toLoc)
-for file in test:
-    fromLoc = dataDir+file
-    toLoc = dataDir+"test/"+file
-    shutil.copyfile(fromLoc, toLoc)
+        test.append(i)"""
+n = 0
+for p in train:
+    n+=1
+    for file in p:
+        fromLoc = dataDir+file
+        toLoc = dataDir+"train/"+file
+        shutil.copyfile(fromLoc, toLoc)
+for p in val:
+    for file in p:
+        fromLoc = dataDir+file
+        toLoc = dataDir+"val/"+file
+        shutil.copyfile(fromLoc, toLoc)
+for p in test:
+    for file in p:
+        fromLoc = dataDir+file
+        toLoc = dataDir+"test/"+file
+        shutil.copyfile(fromLoc, toLoc)
 print(len(train),len(val),len(test))
