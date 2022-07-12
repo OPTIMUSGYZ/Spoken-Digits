@@ -85,7 +85,6 @@ def get_each_accuracy(model, dataloader):
         # select index with maximum prediction score
         pred = output.max(1, keepdim=True)[1]
 
-
         if (str(classes[labels[0]]) == '0'):
             Zero_correct += pred.eq(labels.view_as(pred)).sum().item()
             Zero_total += imgs.shape[0]
@@ -160,6 +159,7 @@ def get_each_accuracy(model, dataloader):
 
     return correct / total
 
+
 def evaluate(net, loader, criterion):
     """ Evaluate the network on the validation set.
 
@@ -175,15 +175,16 @@ def evaluate(net, loader, criterion):
     total_err = 0.0
     total_epoch = 0
     for i, data in enumerate(loader, 0):
-        inputs=data
-        labels = data
+        inputs, labels = data
+        labels = torch.Tensor(labels)
         labels = normalize_label(labels)  # Convert labels to 0/1
         outputs = net(inputs)
-        loss = criterion(outputs, labels.float())
+        loss = criterion(outputs, labels)
         total_loss += loss.item()
         total_epoch += len(labels)
     loss = float(total_loss) / (i + 1)
     return loss
+
 
 def normalize_label(labels):
     """
@@ -196,8 +197,9 @@ def normalize_label(labels):
     """
     max_val = torch.max(labels)
     min_val = torch.min(labels)
-    norm_labels = (labels - min_val)/(max_val - min_val)
-    return norm_labels
+    norm_labels = (labels - min_val) / (max_val - min_val)
+    return norm_labels.long()
+
 
 def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epochs=30):
     train_loader = torch.utils.data.DataLoader(trainData, batch_size=batch_size, shuffle=False)
@@ -207,7 +209,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
 
     torch.manual_seed(1000)
 
-    iters, losses, train_acc, val_acc, train_loss, val_loss = [], [], [], [],[],[]
+    iters, losses, train_acc, val_acc, train_loss, val_loss = [], [], [], [], [], []
     epochs = range(num_epochs)
 
     # training
@@ -215,8 +217,8 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     start_time = time.time()
 
     for epoch in range(num_epochs):
-        total_train_loss=0
-        i=0
+        total_train_loss = 0
+        i = 0
         for imgs, labels in iter(train_loader):
 
             #############################################
@@ -313,12 +315,12 @@ def show_model_test_accuracy(bs, lr, epoch):
 
 
 #################
-train_mode = False
+train_mode = True
 #################
 
 batch_size = 256
 lr = 0.00049
-epoch = 8
+epoch = 1
 
 if train_mode:
     start_training(batch_size, lr, epoch)
