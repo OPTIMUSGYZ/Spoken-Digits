@@ -160,6 +160,44 @@ def get_each_accuracy(model, dataloader):
 
     return correct / total
 
+def evaluate(net, loader, criterion):
+    """ Evaluate the network on the validation set.
+
+     Args:
+         net: PyTorch neural network object
+         loader: PyTorch data loader for the validation set
+         criterion: The loss function
+     Returns:
+         err: A scalar for the avg classification error over the validation set
+         loss: A scalar for the average loss function over the validation set
+     """
+    total_loss = 0.0
+    total_err = 0.0
+    total_epoch = 0
+    for i, data in enumerate(loader, 0):
+        inputs=data
+        labels = data
+        labels = normalize_label(labels)  # Convert labels to 0/1
+        outputs = net(inputs)
+        loss = criterion(outputs, labels.float())
+        total_loss += loss.item()
+        total_epoch += len(labels)
+    loss = float(total_loss) / (i + 1)
+    return loss
+
+def normalize_label(labels):
+    """
+    Given a tensor containing 2 possible values, normalize this to 0/1
+
+    Args:
+        labels: a 1D tensor containing two possible scalar values
+    Returns:
+        A tensor normalize to 0/1 value
+    """
+    max_val = torch.max(labels)
+    min_val = torch.min(labels)
+    norm_labels = (labels - min_val)/(max_val - min_val)
+    return norm_labels
 
 def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epochs=30):
     train_loader = torch.utils.data.DataLoader(trainData, batch_size=batch_size, shuffle=False)
@@ -169,7 +207,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
 
     torch.manual_seed(1000)
 
-    iters, losses, train_acc, val_acc = [], [], [], []
+    iters, losses, train_acc, val_acc, train_loss, val_loss = [], [], [], [],[],[]
     epochs = range(num_epochs)
 
     # training
@@ -177,6 +215,8 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     start_time = time.time()
 
     for epoch in range(num_epochs):
+        total_train_loss=0
+        i=0
         for imgs, labels in iter(train_loader):
 
             #############################################
@@ -197,7 +237,13 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
             # save the current training information
             iters.append(n)
             losses.append(float(loss) / batch_size)  # compute *average* loss
+
+            total_train_loss += loss.item()
             n += 1
+
+        # Compute the train and validation losses
+        train_loss.append(float(total_train_loss) / (i + 1))
+        val_loss.append(evaluate(model, val_loader, criterion))
 
         train_acc.append(get_accuracy(model, train_loader))  # compute training accuracy
         val_acc.append(get_accuracy(model, val_loader))  # compute validation accuracy
@@ -221,6 +267,15 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.xlabel("Iterations")
     plt.ylabel("Loss")
     plt.savefig("./models/plots/model_{}_{}_{}_Train_Loss.png".format(model.name, batch_size, learning_rate))
+    plt.show()
+
+    # plotting training curve of Loss and epochs
+    plt.title("Training Curve")
+    plt.plot(epochs, train_loss, label="Train")
+    plt.plot(epochs, val_loss, label="Validation")
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
+    plt.savefig("./models/plots/model_{}_{}_{}_Train_and_Val_Loss.png".format(model.name, batch_size, learning_rate))
     plt.show()
 
     # plotting training curve of training accuracy and iterations
