@@ -57,4 +57,4 @@ class CNN_Spoken_Digit(nn.Module):
         x = x.view(-1, self.in_features)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
-        return x
+        return F.softmax(x, dim=1)

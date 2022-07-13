@@ -31,13 +31,13 @@ import random
 nPeople = 28
 people = list(range(28))
 data = []
-dataDir = "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/mel_spectrogram/"
+dataDir = "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/audio/"
 
 for n in range(nPeople):
     data.append([])
     for i in range(10):
         for j in range(10):
-            data[n].append("{}/{}_{}.jpg".format(i, n, j))
+            data[n].append("{}/{}_{}.wav".format(i, n, j))
 train,val,test = [],[],[]
 tr,va,te = 7,2,1
 tr = round(nPeople*tr/10)

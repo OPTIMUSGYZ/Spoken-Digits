@@ -21,13 +21,13 @@ torch.manual_seed(1)  # set the random seed
 use_cuda = False
 
 
-def get_model_name(name, batch_size, learning_rate, epoch):
+def get_model_name(name, bs, learning_rate, ep):
     """ Generate a name for the model consisting of all the hyperparameter values"""
 
     path = "model_{0}_bs{1}_lr{2}_epoch{3}".format(name,
-                                                   batch_size,
+                                                   bs,
                                                    learning_rate,
-                                                   epoch)
+                                                   ep)
     return path
 
 
@@ -85,75 +85,68 @@ def get_each_accuracy(model, dataloader):
         # select index with maximum prediction score
         pred = output.max(1, keepdim=True)[1]
 
-        if (str(classes[labels[0]]) == '0'):
+        if str(classes[labels[0]]) == '0':
             Zero_correct += pred.eq(labels.view_as(pred)).sum().item()
             Zero_total += imgs.shape[0]
 
-
-        elif (str(classes[labels[0]]) == '1'):
+        elif str(classes[labels[0]]) == '1':
             One_correct += pred.eq(labels.view_as(pred)).sum().item()
             One_total += imgs.shape[0]
 
-
-        elif (str(classes[labels[0]]) == '2'):
+        elif str(classes[labels[0]]) == '2':
             Two_correct += pred.eq(labels.view_as(pred)).sum().item()
             Two_total += imgs.shape[0]
 
-
-        elif (str(classes[labels[0]]) == '3'):
+        elif str(classes[labels[0]]) == '3':
             Three_correct += pred.eq(labels.view_as(pred)).sum().item()
             Three_total += imgs.shape[0]
 
-
-        elif (str(classes[labels[0]]) == '4'):
+        elif str(classes[labels[0]]) == '4':
             Four_correct += pred.eq(labels.view_as(pred)).sum().item()
             Four_total += imgs.shape[0]
 
-
-        elif (str(classes[labels[0]]) == '5'):
+        elif str(classes[labels[0]]) == '5':
             Five_correct += pred.eq(labels.view_as(pred)).sum().item()
             Five_total += imgs.shape[0]
 
-
-        elif (str(classes[labels[0]]) == '6'):
+        elif str(classes[labels[0]]) == '6':
             Six_correct += pred.eq(labels.view_as(pred)).sum().item()
             Six_total += imgs.shape[0]
 
-
-        elif (str(classes[labels[0]]) == '7'):
+        elif str(classes[labels[0]]) == '7':
             Seven_correct += pred.eq(labels.view_as(pred)).sum().item()
             Seven_total += imgs.shape[0]
 
-        elif (str(classes[labels[0]]) == '8'):
+        elif str(classes[labels[0]]) == '8':
             Eight_correct += pred.eq(labels.view_as(pred)).sum().item()
             Eight_total += imgs.shape[0]
 
-        elif (str(classes[labels[0]]) == '9'):
+        elif str(classes[labels[0]]) == '9':
             Nine_correct += pred.eq(labels.view_as(pred)).sum().item()
             Nine_total += imgs.shape[0]
 
         correct += pred.eq(labels.view_as(pred)).sum().item()
         total += imgs.shape[0]
 
-    if (Zero_total != 0):
+    if Zero_total != 0:
         print("Accuracy for 0: ", Zero_correct / Zero_total)
-    if (One_total != 0):
+    if One_total != 0:
         print("Accuracy for 1: ", One_correct / One_total)
-    if (Two_total != 0):
+    if Two_total != 0:
         print("Accuracy for 2: ", Two_correct / Two_total)
-    if (Three_total != 0):
+    if Three_total != 0:
         print("Accuracy for 3: ", Three_correct / Three_total)
-    if (Four_total != 0):
+    if Four_total != 0:
         print("Accuracy for 4: ", Four_correct / Four_total)
-    if (Five_total != 0):
+    if Five_total != 0:
         print("Accuracy for 5: ", Five_correct / Five_total)
-    if (Six_total != 0):
+    if Six_total != 0:
         print("Accuracy for 6: ", Six_correct / Six_total)
-    if (Seven_total != 0):
+    if Seven_total != 0:
         print("Accuracy for 7: ", Seven_correct / Seven_total)
-    if (Eight_total != 0):
+    if Eight_total != 0:
         print("Accuracy for 8: ", Eight_correct / Eight_total)
-    if (Nine_total != 0):
+    if Nine_total != 0:
         print("Accuracy for 9: ", Nine_correct / Nine_total)
     print("Total Accuracy: ", correct / total)
 
@@ -172,7 +165,6 @@ def evaluate(net, loader, criterion):
          loss: A scalar for the average loss function over the validation set
      """
     total_loss = 0.0
-    total_err = 0.0
     total_epoch = 0
     for i, data in enumerate(loader, 0):
         inputs, labels = data
@@ -201,9 +193,9 @@ def normalize_label(labels):
     return norm_labels.long()
 
 
-def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epochs=30):
-    train_loader = torch.utils.data.DataLoader(trainData, batch_size=batch_size, shuffle=False)
-    val_loader = torch.utils.data.DataLoader(valData, batch_size=batch_size, shuffle=False)
+def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30):
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=bs, shuffle=False)
+    val_loader = torch.utils.data.DataLoader(val_data, batch_size=bs, shuffle=False)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
 
@@ -216,7 +208,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     n = 0  # the number of iterations
     start_time = time.time()
 
-    for epoch in range(num_epochs):
+    for ep in range(num_epochs):
         total_train_loss = 0
         i = 0
         for imgs, labels in iter(train_loader):
@@ -234,11 +226,11 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
             loss = criterion(out, labels)  # compute the total loss
             loss.backward()  # backward pass (compute parameter updates)
             optimizer.step()  # make the updates for each parameter
-            optimizer.zero_grad()  # a clean up step for PyTorch
+            optimizer.zero_grad()  # a cleanup step for PyTorch
 
             # save the current training information
             iters.append(n)
-            losses.append(float(loss) / batch_size)  # compute *average* loss
+            losses.append(float(loss) / bs)  # compute *average* loss
 
             total_train_loss += loss.item()
             n += 1
@@ -251,11 +243,11 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
         val_acc.append(get_accuracy(model, val_loader))  # compute validation accuracy
 
         print("Epoch {}: Train acc: {} Validation acc: {}".format(
-            epoch,
+            ep,
             train_acc[-1],
             val_acc[-1]))
 
-        model_path = "./models/state_dict/" + str(get_model_name(model.name, batch_size, learning_rate, epoch))
+        model_path = "./models/state_dict/" + str(get_model_name(model.name, bs, learning_rate, ep))
         torch.save(model.state_dict(), model_path)
 
     print('Finished Training')
@@ -268,7 +260,7 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.plot(iters, losses, label="Train")
     plt.xlabel("Iterations")
     plt.ylabel("Loss")
-    plt.savefig("./models/plots/model_{}_{}_{}_Train_Loss.png".format(model.name, batch_size, learning_rate))
+    plt.savefig("./models/plots/model_{}_{}_{}_Train_Loss.png".format(model.name, bs, learning_rate))
     plt.show()
 
     # plotting training curve of Loss and epochs
@@ -277,7 +269,8 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.plot(epochs, val_loss, label="Validation")
     plt.xlabel("Epochs")
     plt.ylabel("Loss")
-    plt.savefig("./models/plots/model_{}_{}_{}_Train_and_Val_Loss.png".format(model.name, batch_size, learning_rate))
+    plt.legend(loc='best')
+    plt.savefig("./models/plots/model_{}_{}_{}_Train_and_Val_Loss.png".format(model.name, bs, learning_rate))
     plt.show()
 
     # plotting training curve of training accuracy and iterations
@@ -287,42 +280,42 @@ def train(model, trainData, valData, batch_size=10, learning_rate=0.01, num_epoc
     plt.xlabel("Epochs")
     plt.ylabel("Training Accuracy")
     plt.legend(loc='best')
-    plt.savefig("./models/plots/model_{}_{}_{}_Train_Val_Accuracy.png".format(model.name, batch_size, learning_rate))
+    plt.savefig("./models/plots/model_{}_{}_{}_Train_Val_Accuracy.png".format(model.name, bs, learning_rate))
     plt.show()
 
     print("Final Training Accuracy: {}".format(train_acc[-1]))
     print("Final Validation Accuracy: {}".format(val_acc[-1]))
 
 
-def start_training(batch_size, lr, epoch):
+def start_training(bs, l_r, ep):
     train_data, val_data = data_loading.load_train_val_data()
     CNN = CNN_Model.CNN_Spoken_Digit()
     if use_cuda and torch.cuda.is_available():
         torch.cuda.empty_cache()
         CNN.cuda()
         print("Training on GPU...")
-    train(CNN, train_data, val_data, batch_size, lr, epoch)
+    train(CNN, train_data, val_data, bs, l_r, ep)
 
 
-def show_model_test_accuracy(bs, lr, epoch):
+def show_model_test_accuracy(bs, l_r, ep):
     model = CNN_Model.CNN_Spoken_Digit()
-    modelPath = "./models/state_dict/" + str(get_model_name("CNN_Spoken_Digit", bs, lr, epoch))
-    state = torch.load(modelPath)
+    model_path = "./models/state_dict/" + str(get_model_name("CNN_Spoken_Digit", bs, l_r, ep))
+    state = torch.load(model_path)
     model.load_state_dict(state)
-    testLoader = data_loading.load_test_data_loader()
-    acc = get_each_accuracy(model, testLoader)
-    print("{} with bs={} lr={} epoch={} test accuracy: {}".format(model.name, bs, lr, epoch, acc))
+    test_loader = data_loading.load_test_data_loader()
+    acc = get_each_accuracy(model, test_loader)
+    print("{} with bs={} lr={} epoch={} test accuracy: {}".format(model.name, bs, l_r, ep, acc))
 
 
 #################
 train_mode = True
+run_mode = True
 #################
 
-batch_size = 256
-lr = 0.00049
-epoch = 1
-
-if train_mode:
-    start_training(batch_size, lr, epoch)
-
-show_model_test_accuracy(batch_size, lr, epoch - 1)  # default load to last epoch
+if not run_mode:
+    batch_size = 256
+    lr = 0.00049
+    epoch = 8
+    if train_mode:
+        start_training(batch_size, lr, epoch)
+    show_model_test_accuracy(batch_size, lr, epoch - 1)  # default load to last epoch
