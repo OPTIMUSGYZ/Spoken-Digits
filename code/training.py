@@ -325,7 +325,7 @@ def show_model_test_accuracy(bs, l_r, ep):
 
 #################
 train_mode = True
-run_mode = False
+run_mode = True
 #################
 
 if not run_mode:
