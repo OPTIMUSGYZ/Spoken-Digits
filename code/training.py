@@ -18,7 +18,8 @@ import CNN_Model
 import data_loading
 
 torch.manual_seed(1)  # set the random seed
-use_cuda = False
+use_cuda = True
+use_metal = True
 
 
 def get_model_name(name, bs, learning_rate, ep):
@@ -41,6 +42,9 @@ def get_accuracy(model, dataloader):
             torch.cuda.empty_cache()
             imgs = imgs.cuda()
             labels = labels.cuda()
+        if use_metal and torch.backends.mps.is_available():
+            imgs = imgs.to('mps')
+            labels = labels.to('mps')
         #############################################
         output = model(imgs)
 
@@ -168,6 +172,12 @@ def evaluate(net, loader, criterion):
     total_epoch = 0
     for i, data in enumerate(loader, 0):
         inputs, labels = data
+        if use_cuda and torch.cuda.is_available():
+            inputs = inputs.cuda()
+            labels = labels.cuda()
+        if use_metal and torch.backends.mps.is_available():
+            inputs = inputs.to('mps')
+            labels = labels.to('mps')
         labels = torch.Tensor(labels)
         labels = normalize_label(labels)  # Convert labels to 0/1
         outputs = net(inputs)
@@ -219,6 +229,9 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30)
                 torch.cuda.empty_cache()
                 imgs = imgs.cuda()
                 labels = labels.cuda()
+            if use_metal and torch.backends.mps.is_available():
+                imgs = imgs.to('mps')
+                labels = labels.to('mps')
             #############################################
 
             out = model(imgs)  # forward pass
@@ -294,6 +307,9 @@ def start_training(bs, l_r, ep):
         torch.cuda.empty_cache()
         CNN.cuda()
         print("Training on GPU...")
+    if use_metal and torch.backends.mps.is_available():
+        CNN.to('mps')
+        print("Training using Metal")
     train(CNN, train_data, val_data, bs, l_r, ep)
 
 
@@ -309,13 +325,13 @@ def show_model_test_accuracy(bs, l_r, ep):
 
 #################
 train_mode = True
-run_mode = True
+run_mode = False
 #################
 
 if not run_mode:
-    batch_size = 256
+    batch_size = 200
     lr = 0.00049
-    epoch = 8
+    epoch = 12
     if train_mode:
         start_training(batch_size, lr, epoch)
     show_model_test_accuracy(batch_size, lr, epoch - 1)  # default load to last epoch
