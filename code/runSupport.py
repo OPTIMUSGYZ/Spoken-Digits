@@ -12,6 +12,8 @@ from torchvision import transforms
 import CNN_Model
 import training
 
+t = True
+
 
 def generateMelSpec(filePath, savePath):
     if not os.path.exists(savePath):
@@ -39,9 +41,42 @@ def recordAudio(sampleRate, duration, savePath):
         os.makedirs(savePath)
     print("Recording...")
     recording = sd.rec(int(duration * sampleRate), samplerate=sampleRate, channels=1)
-    sd.wait()
-    write(savePath + "out.wav", sampleRate, recording)
+    # sd.wait()
     print("Finished")
+    return recording
+
+
+def trimAudio(sampleRate, savePath, recording):
+    plt.plot(range(len(recording)), recording)
+    plt.savefig('out1.jpg')
+    plt.close()
+    thd = 0.018
+    i = 0
+    idx1, idx2 = 0, 0
+    while i < len(recording):
+        if abs(recording[i]) > thd:
+            subRec = np.abs(recording[i+10:int(i+0.1*sampleRate)])
+            yes = np.average(subRec) > thd
+            if yes:
+                idx1 = i
+                i = len(recording)
+        i += 1
+    i = len(recording) - 1
+    while i > 0:
+        if abs(recording[i]) > thd:
+            subRec = np.abs(recording[int(i-0.1*sampleRate):i-10])
+            yes = np.average(subRec) > thd
+            if yes:
+                idx2 = i
+                i = 0
+        i -= 1
+    recording = recording[idx1:idx2]
+    """if len(recording) < sampleRate:
+        return False"""
+    plt.plot(range(len(recording)), recording)
+    plt.savefig('out2.jpg')
+    plt.close()
+    write(savePath + "out.wav", sampleRate, recording)
 
 
 def createModel(bs, lr, ep):
@@ -61,6 +96,5 @@ def predict(model, img):
     img = img.unsqueeze(0)
 
     probList = model(img).squeeze().tolist()
-    print(probList)
     prediction = probList.index(max(probList))
     return prediction
