@@ -13,11 +13,13 @@ import CNN_Model
 import training
 
 t = True
-path = os.getcwd()
+path = os.path.abspath(__file__)
+path = path[:-14]
+print(path)
 
 
 def generateMelSpec(filePath, savePath):
-    if not os.path.exists(path + savePath):
+    if not os.path.exists(os.path.join(path + savePath)):
         print("Invalid path")
         return None
     # load file
@@ -32,14 +34,14 @@ def generateMelSpec(filePath, savePath):
     ax.axis('off')
     # save mel spectrogram as jpg
     melSpecImg = librosa.display.specshow(melSpec)
-    plt.savefig(path + savePath + "out.jpg")
+    plt.savefig(os.path.join(path + savePath + "out.jpg"))
     plt.close()
-    return path + savePath + "out.jpg"
+    return os.path.join(path + savePath + "out.jpg")
 
 
 def recordAudio(sampleRate, duration, savePath):
-    if not os.path.exists(path + savePath):
-        os.makedirs(path + savePath)
+    if not os.path.exists(os.path.join(path + savePath)):
+        os.makedirs(os.path.join(path + savePath))
     print("Recording...")
     recording = sd.rec(int(duration * sampleRate), samplerate=sampleRate, channels=1)
     # sd.wait()
@@ -49,7 +51,7 @@ def recordAudio(sampleRate, duration, savePath):
 
 def trimAudio(sampleRate, savePath, recording):
     plt.plot(range(len(recording)), recording)
-    plt.savefig('./temp/out1.jpg')
+    plt.savefig(os.path.join(path+'/temp/out1.jpg'))
     plt.close()
     thd = 0.018
     i = 0
@@ -75,14 +77,14 @@ def trimAudio(sampleRate, savePath, recording):
     """if len(recording) < sampleRate:
         return False"""
     plt.plot(range(len(recording)), recording)
-    plt.savefig(path + '/temp/out2.jpg')
+    plt.savefig(os.path.join(path + '/temp/out2.jpg'))
     plt.close()
-    write(path + savePath + "out.wav", sampleRate, recording)
+    write(os.path.join(path + savePath + "out.wav"), sampleRate, recording)
 
 
 def createModel(bs, lr, ep):
     model = CNN_Model.CNN_Spoken_Digit()
-    model_path = path + "/models/state_dict/" + str(training.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
+    model_path = os.path.join(path + "/models/state_dict/") + str(training.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
     state = torch.load(model_path)
     model.load_state_dict(state)
     return model

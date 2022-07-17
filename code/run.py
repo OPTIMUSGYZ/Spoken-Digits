@@ -1,15 +1,12 @@
 import os
 import sys
-import time
-import threading
-from PySide6.QtCore import QTimer
 
 import numpy as np
+from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
 
 from MainUI import Ui_MainWindow
-from runSupport import sd, recordAudio, trimAudio, generateMelSpec, createModel, predict
-import runSupport as rs
+from runSupport import recordAudio, trimAudio, generateMelSpec, createModel, predict
 
 
 class MainWindow(QMainWindow):
@@ -26,11 +23,13 @@ class MainWindow(QMainWindow):
         timer.timeout.connect(self.timeout)
         self.predict = False
         self.recording = np.empty(0)
+
     def buttonClicked(self):
         self.timerStart = True
         self.seconds = self.duration
-        self.recording = recordAudio(48000, self.duration, './temp/')
+        self.recording = recordAudio(48000, self.duration, '/temp/')
         self.predict = True
+
     def timeout(self):
         if self.seconds > 0 and self.timerStart:
             self.seconds -= 1
@@ -38,8 +37,8 @@ class MainWindow(QMainWindow):
         elif self.predict:
             self.timerStart = False
             self.predict = False
-            trimAudio(48000, './temp/', self.recording)
-            img = generateMelSpec('./temp/', './temp/')
+            trimAudio(48000, '/temp/', self.recording)
+            img = generateMelSpec('/temp/', '/temp/')
             model = createModel(256, 0.00049, 7)
             p = str(predict(model, img))
             self.ui.lcdOut.display(p)
@@ -47,10 +46,8 @@ class MainWindow(QMainWindow):
             self.timerStart = False
 
 
-
 # Create the Qt Application
 app = QApplication(sys.argv)
-
 window = MainWindow()
 window.show()
 
