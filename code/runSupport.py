@@ -13,14 +13,15 @@ import CNN_Model
 import training
 
 t = True
+path = os.getcwd()
 
 
 def generateMelSpec(filePath, savePath):
-    if not os.path.exists(savePath):
+    if not os.path.exists(path + savePath):
         print("Invalid path")
         return None
     # load file
-    signal, sampleRate = librosa.load(filePath + "out.wav")
+    signal, sampleRate = librosa.load(path + filePath + "out.wav")
 
     melSpec = librosa.feature.melspectrogram(y=signal, sr=sampleRate,
                                              hop_length=512)  # hop length 512 is better for speech processing
@@ -31,14 +32,14 @@ def generateMelSpec(filePath, savePath):
     ax.axis('off')
     # save mel spectrogram as jpg
     melSpecImg = librosa.display.specshow(melSpec)
-    plt.savefig(savePath + "out.jpg")
+    plt.savefig(path + savePath + "out.jpg")
     plt.close()
-    return savePath + "out.jpg"
+    return path + savePath + "out.jpg"
 
 
 def recordAudio(sampleRate, duration, savePath):
-    if not os.path.exists(savePath):
-        os.makedirs(savePath)
+    if not os.path.exists(path + savePath):
+        os.makedirs(path + savePath)
     print("Recording...")
     recording = sd.rec(int(duration * sampleRate), samplerate=sampleRate, channels=1)
     # sd.wait()
@@ -48,14 +49,14 @@ def recordAudio(sampleRate, duration, savePath):
 
 def trimAudio(sampleRate, savePath, recording):
     plt.plot(range(len(recording)), recording)
-    plt.savefig('out1.jpg')
+    plt.savefig('./temp/out1.jpg')
     plt.close()
     thd = 0.018
     i = 0
     idx1, idx2 = 0, 0
     while i < len(recording):
         if abs(recording[i]) > thd:
-            subRec = np.abs(recording[i+10:int(i+0.1*sampleRate)])
+            subRec = np.abs(recording[i + 10:int(i + 0.1 * sampleRate)])
             yes = np.average(subRec) > thd
             if yes:
                 idx1 = i
@@ -64,7 +65,7 @@ def trimAudio(sampleRate, savePath, recording):
     i = len(recording) - 1
     while i > 0:
         if abs(recording[i]) > thd:
-            subRec = np.abs(recording[int(i-0.1*sampleRate):i-10])
+            subRec = np.abs(recording[int(i - 0.1 * sampleRate):i - 10])
             yes = np.average(subRec) > thd
             if yes:
                 idx2 = i
@@ -74,14 +75,14 @@ def trimAudio(sampleRate, savePath, recording):
     """if len(recording) < sampleRate:
         return False"""
     plt.plot(range(len(recording)), recording)
-    plt.savefig('out2.jpg')
+    plt.savefig(path + '/temp/out2.jpg')
     plt.close()
-    write(savePath + "out.wav", sampleRate, recording)
+    write(path + savePath + "out.wav", sampleRate, recording)
 
 
 def createModel(bs, lr, ep):
     model = CNN_Model.CNN_Spoken_Digit()
-    model_path = "./models/state_dict/" + str(training.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
+    model_path = path + "/models/state_dict/" + str(training.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
     state = torch.load(model_path)
     model.load_state_dict(state)
     return model
