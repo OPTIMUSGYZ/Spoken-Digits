@@ -10,7 +10,7 @@ from scipy.io.wavfile import write
 from torchvision import transforms
 
 import CNN_Model
-import training
+import trainSupport
 
 t = True
 path = os.path.abspath(__file__)
@@ -84,7 +84,7 @@ def trimAudio(sampleRate, savePath, recording):
 
 def createModel(bs, lr, ep):
     model = CNN_Model.CNN_Spoken_Digit()
-    model_path = os.path.join(path + "/models/state_dict/") + str(training.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
+    model_path = os.path.join(path + "/models/state_dict/") + str(trainSupport.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
     state = torch.load(model_path)
     model.load_state_dict(state)
     return model
