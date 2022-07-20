@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
             self.predict = False
             trimAudio(48000, '/temp/', self.recording)
             img = generateMelSpec('/temp/', '/temp/')
-            model = createModel(256, 0.00049, 7)
+            model = createModel(256, 0.0005, 11)
             p = str(predict(model, img))
             self.ui.lcdOut.display(p)
         else:
