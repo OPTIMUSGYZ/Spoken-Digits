@@ -6,7 +6,7 @@ import numpy as np
 ##################################
 
 
-p1 = 26  # start person index
+p1 = 0  # start person index
 p2 = 27  # end person index
 
 
