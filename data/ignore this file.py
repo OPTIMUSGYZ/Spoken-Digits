@@ -13,7 +13,7 @@ for p in people:
     n += 1
 """
 # 9,14,15,18,19,24,25,27,32,35,37,38,41,42
-# import shutil
+import shutil
 
 """
 people = [0]
@@ -27,19 +27,21 @@ for person in people:
             shutil.copyfile(file, output)
     p += 1
 """
-"""
+
 import random
+import os
 
 nPeople = 28
 people = list(range(28))
 data = []
-dataDir = "/Users/gyz/Library/Mobile Documents/com~apple~CloudDocs/U of T/2022 Summer/APS360/Spoken-Digits/data/audio/"
+dataDir = os.path.join(os.path.abspath(__file__)[:-19],"mel_spectrogram/")
+print(dataDir)
 
 for n in range(nPeople):
     data.append([])
     for i in range(10):
         for j in range(10):
-            data[n].append("{}/{}_{}.wav".format(i, n, j))
+            data[n].append("{}/{}_{}.jpg".format(i, n, j))
 train, val, test = [], [], []
 tr, va, te = 7, 2, 1
 tr = round(nPeople * tr / 10)
@@ -55,7 +57,7 @@ for i in range(va):
     people.pop(n)
 for i in people:
     test.append(data[i])
-"""
+print(len(train), len(val), len(test))
 """for d in data:
     ld = len(d)
     for i in range(int(ld*0.7)):
@@ -68,10 +70,8 @@ for i in people:
         d.pop(n)
     for i in d:
         test.append(i)"""
-"""
-n = 0
+
 for p in train:
-    n += 1
     for file in p:
         fromLoc = dataDir + file
         toLoc = dataDir + "train/" + file
@@ -87,8 +87,8 @@ for p in test:
         toLoc = dataDir + "test/" + file
         shutil.copyfile(fromLoc, toLoc)
 print(len(train), len(val), len(test))
-"""
 
+"""
 import librosa
 import matplotlib.pyplot as plt
 import noisereduce as nr
@@ -140,12 +140,13 @@ for digit in range(10):
                         break
                 i -= 1
             recording = recording[idx1:idx2]
-            """if len(recording) < sampleRate:
-                return False"""
+            #if len(recording) < sampleRate:
+                #return False
 
-            """plt.plot(range(len(recording)), recording)
+            plt.plot(range(len(recording)), recording)
             plt.savefig("./ga/{}_{}_{}.png".format(digit, person, idx))
-            plt.close()"""
-            #os.remove("./audio/{}/{}_{}.png".format(digit, person, idx))
+            plt.close()
+            # os.remove("./audio/{}/{}_{}.png".format(digit, person, idx))
             write("./audio/{}/{}_{}.wav".format(digit, person, idx), sampleRate, recording)
             print(digit, person, idx)
+"""
