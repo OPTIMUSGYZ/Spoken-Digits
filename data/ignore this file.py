@@ -70,7 +70,12 @@ print(len(train), len(val), len(test))
         d.pop(n)
     for i in d:
         test.append(i)"""
-
+dirs = ['train/','val/','test/']
+for d in dirs:
+    if os.path.isdir(dataDir+d):
+        shutil.rmtree(dataDir+d)
+    for i in range(10):
+        os.makedirs(dataDir + d + str(i)+'/')
 for p in train:
     for file in p:
         fromLoc = dataDir + file
