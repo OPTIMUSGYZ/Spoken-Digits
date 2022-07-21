@@ -136,3 +136,4 @@ dmypy.json
 /.idea/Spoken-Digit.iml
 /.idea/.gitignore
 /code/temp/
+/.idea/inspectionProfiles/Project_Default.xml
