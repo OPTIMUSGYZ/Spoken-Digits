@@ -2,11 +2,12 @@ import os
 
 import librosa.display
 import matplotlib.pyplot as plt
+import noisereduce as nr
 import numpy as np
 import sounddevice as sd
 import torch
 from PIL import Image
-from scipy.io.wavfile import write
+from scipy.io.wavfile import write, read
 from torchvision import transforms
 
 import CNN_Model
@@ -23,7 +24,7 @@ def generateMelSpec(filePath, savePath):
         print("Invalid path")
         return None
     # load file
-    signal, sampleRate = librosa.load(path + filePath + "out.wav")
+    signal, sampleRate = librosa.load(path + filePath + "outTrim.wav")
 
     melSpec = librosa.feature.melspectrogram(y=signal, sr=sampleRate,
                                              hop_length=512)  # hop length 512 is better for speech processing
@@ -49,42 +50,68 @@ def recordAudio(sampleRate, duration, savePath):
     return recording
 
 
-def trimAudio(sampleRate, savePath, recording):
+def trimAudio(savePath):
+    sampleRate, recording = read(os.path.join(path + savePath + "orgOut.wav"))
     plt.plot(range(len(recording)), recording)
-    plt.savefig(os.path.join(path+'/temp/out1.jpg'))
+    plt.savefig(os.path.join(path + savePath + 'orgOut.jpg'))
     plt.close()
-    thd = 0.018
+    recording = nr.reduce_noise(y=recording, sr=sampleRate)
+    plt.plot(range(len(recording)), recording)
+    plt.savefig(os.path.join(path + savePath + 'outNR.jpg'))
+    plt.close()
+    write(os.path.join(path + savePath + "outNR.wav"), sampleRate, recording)
+    absRecording = np.abs(recording)
+    recAvg = np.mean(absRecording)
+    scale = 0.05 / recAvg
+    recording *= scale
+    absRecording *= scale
+    absRecording = np.clip(absRecording, 0.008, np.max(absRecording))
+    recAvg = np.mean(absRecording)
+    thd1 = np.mean(absRecording[:int(sampleRate * 0.5)])
+    thd2 = np.mean(absRecording[len(recording) - int(sampleRate * 0.5):])
+    print(recAvg, thd1, thd2)
+    if thd1 < recAvg:
+        if thd1 < thd2 < recAvg:
+            thd = thd2
+        else:
+            thd = thd1
+    else:
+        thd = thd2
+    thd = (thd+recAvg)/2
     i = 0
     idx1, idx2 = 0, 0
     while i < len(recording):
-        if abs(recording[i]) > thd:
-            subRec = np.abs(recording[i + 10:int(i + 0.1 * sampleRate)])
-            yes = np.average(subRec) > thd
+        if absRecording[i] > thd:
+            subRec = absRecording[i + 10:int(i + 0.2 * sampleRate)]
+            yes = np.mean(subRec) > thd
             if yes:
                 idx1 = i
-                i = len(recording)
+                break
         i += 1
     i = len(recording) - 1
     while i > 0:
-        if abs(recording[i]) > thd:
-            subRec = np.abs(recording[int(i - 0.1 * sampleRate):i - 10])
-            yes = np.average(subRec) > thd
+        if absRecording[i] > thd:
+            subRec = absRecording[int(i - 0.2 * sampleRate):i - 10]
+            yes = np.mean(subRec) > thd
             if yes:
                 idx2 = i
-                i = 0
+                break
         i -= 1
+    print(idx1, idx2)
     recording = recording[idx1:idx2]
     """if len(recording) < sampleRate:
         return False"""
+
     plt.plot(range(len(recording)), recording)
-    plt.savefig(os.path.join(path + '/temp/out2.jpg'))
+    plt.savefig(os.path.join(path + savePath + 'outTrim.jpg'))
     plt.close()
-    write(os.path.join(path + savePath + "out.wav"), sampleRate, recording)
+    write(os.path.join(path + savePath + "outTrim.wav"), sampleRate, recording)
 
 
 def createModel(bs, lr, ep):
     model = CNN_Model.CNN_Spoken_Digit()
-    model_path = os.path.join(path + "/models/state_dict/") + str(trainSupport.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
+    model_path = os.path.join(path + "/models/state_dict/") + str(
+        trainSupport.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
     state = torch.load(model_path)
     model.load_state_dict(state)
     return model
@@ -99,5 +126,10 @@ def predict(model, img):
     img = img.unsqueeze(0)
 
     probList = model(img).squeeze().tolist()
-    prediction = probList.index(max(probList))
+    for i in range(10):
+        print("{}: {}%".format(i, round(probList[i] * 100, 2)))
+    maxProb = max(probList)
+    prediction = probList.index(maxProb)
+    if maxProb < 0.2:
+        prediction = -1
     return prediction
