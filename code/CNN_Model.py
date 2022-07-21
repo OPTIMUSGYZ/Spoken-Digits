@@ -48,7 +48,7 @@ class CNN_Spoken_Digit(nn.Module):
         self.fc1 = nn.Linear(self.in_features, 64)
         self.fc2 = nn.Linear(64, 10)  # 10 outputs
 
-        self.name = "CNN_Spoken_Digit"
+        self.name = "CNN_Spoken_Digits"
 
     def forward(self, x):
         x = self.pool(self.batchNorm1(F.relu(self.conv1(x))))
