@@ -217,7 +217,6 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
 
     for ep in range(num_epochs):
         total_train_loss = 0
-        i = 0
         for imgs, labels in iter(train_loader):
 
             #############################################
@@ -246,7 +245,7 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
             n += 1
 
         # Compute the train and validation losses
-        train_loss.append(float(total_train_loss) / (i + 1))
+        train_loss.append(float(total_train_loss) / n)
         val_loss.append(evaluate(model, val_loader, criterion, use_cuda, use_metal))
 
         train_acc.append(get_accuracy(model, train_loader, use_cuda, use_metal))  # compute training accuracy
