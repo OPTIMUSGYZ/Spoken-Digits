@@ -111,7 +111,7 @@ def trimAudio(savePath):
 def createModel(bs, lr, ep):
     model = CNN_Model.CNN_Spoken_Digit()
     model_path = os.path.join(path + "/models/state_dict/") + str(
-        trainSupport.get_model_name("CNN_Spoken_Digit", bs, lr, ep))
+        trainSupport.get_model_name(model.name, bs, lr, ep))
     state = torch.load(model_path)
     model.load_state_dict(state)
     return model

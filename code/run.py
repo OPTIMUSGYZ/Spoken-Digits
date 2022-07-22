@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
             write(os.path.join("./temp/orgOut.wav"), self.sampleRate, self.recording)
             trimAudio('/temp/')
             img = generateMelSpec('/temp/', '/temp/')
-            model = createModel(400, 0.0005, 14)
+            model = createModel(256, 0.00049, 11)
             p = predict(model, img)
             if p == -1:
                 self.ui.lcdOut.display('F')
