@@ -311,7 +311,7 @@ def start_training(bs, l_r, ep, use_cuda=False, use_metal=False):
 
 def show_model_test_accuracy(bs, l_r, ep):
     model = CNN_Model.CNN_Spoken_Digit()
-    model_path = "./models/state_dict/" + str(get_model_name("CNN_Spoken_Digit", bs, l_r, ep))
+    model_path = "./models/state_dict/" + str(get_model_name(model.name, bs, l_r, ep))
     state = torch.load(model_path)
     model.load_state_dict(state)
     test_loader = data_loading.load_test_data_loader()
