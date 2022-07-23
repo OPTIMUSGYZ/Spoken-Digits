@@ -23,9 +23,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(360, 640)
-        MainWindow.setMinimumSize(QSize(360, 640))
-        MainWindow.setMaximumSize(QSize(360, 640))
+        MainWindow.resize(540, 960)
+        MainWindow.setMinimumSize(QSize(540, 960))
+        MainWindow.setMaximumSize(QSize(540, 960))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label_2 = QLabel(self.centralwidget)
@@ -64,7 +64,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 360, 37))
+        self.menubar.setGeometry(QRect(0, 0, 540, 37))
         MainWindow.setMenuBar(self.menubar)
 
         self.retranslateUi(MainWindow)

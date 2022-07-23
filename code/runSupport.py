@@ -77,7 +77,7 @@ def trimAudio(savePath):
             thd = thd1
     else:
         thd = thd2
-    thd = (thd+recAvg)/2
+    thd = (thd + recAvg) / 2
     i = 0
     idx1, idx2 = 0, 0
     while i < len(recording):
@@ -112,7 +112,7 @@ def createModel(bs, lr, ep):
     model = CNN_Model.CNN_Spoken_Digit()
     model_path = os.path.join(path + "/models/state_dict/") + str(
         trainSupport.get_model_name(model.name, bs, lr, ep))
-    state = torch.load(model_path)
+    state = torch.load(model_path, 'cpu')
     model.load_state_dict(state)
     return model
 
