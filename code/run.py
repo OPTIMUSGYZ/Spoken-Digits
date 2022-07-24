@@ -39,6 +39,7 @@ class MainWindow(QMainWindow):
             self.timerStart = False
             self.predict = False
             write(os.path.join("./temp/orgOut.wav"), self.sampleRate, self.recording)
+            print("Finished")
             trimAudio('/temp/')
             img = generateMelSpec('/temp/', '/temp/')
             model = createModel(100, 0.0002, 49)

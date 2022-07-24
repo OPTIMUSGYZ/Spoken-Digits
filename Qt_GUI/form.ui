@@ -147,6 +147,27 @@
      <double>0.000000000000000</double>
     </property>
    </widget>
+   <widget class="QLabel" name="lblBackground">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>540</width>
+      <height>960</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../code/UIBackground.png</pixmap>
+    </property>
+   </widget>
+   <zorder>lblBackground</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label</zorder>
+   <zorder>btnRecord</zorder>
+   <zorder>lcdOut</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

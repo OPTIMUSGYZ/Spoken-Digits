@@ -61,7 +61,16 @@ class Ui_MainWindow(object):
         self.lcdOut.setMode(QLCDNumber.Hex)
         self.lcdOut.setSegmentStyle(QLCDNumber.Filled)
         self.lcdOut.setProperty("value", 0.000000000000000)
+        self.lblBackground = QLabel(self.centralwidget)
+        self.lblBackground.setObjectName(u"lblBackground")
+        self.lblBackground.setGeometry(QRect(0, 0, 540, 960))
+        self.lblBackground.setPixmap(QPixmap(u"../code/UIBackground.png"))
         MainWindow.setCentralWidget(self.centralwidget)
+        self.lblBackground.raise_()
+        self.label_2.raise_()
+        self.label.raise_()
+        self.btnRecord.raise_()
+        self.lcdOut.raise_()
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 540, 37))
@@ -83,5 +92,6 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.btnRecord.setShortcut(QCoreApplication.translate("MainWindow", u"R", None))
 #endif // QT_CONFIG(shortcut)
+        self.lblBackground.setText("")
     # retranslateUi
 

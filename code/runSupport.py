@@ -46,7 +46,6 @@ def recordAudio(sampleRate, duration, savePath):
     print("Recording...")
     recording = sd.rec(int(duration * sampleRate), samplerate=sampleRate, channels=1)
     # sd.wait()
-    print("Finished")
     return recording
 
 
