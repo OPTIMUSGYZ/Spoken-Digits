@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.btnRecord.clicked.connect(self.buttonClicked)
-        self.duration = 4
+        self.duration = 3
         self.seconds = self.duration - 1
         timer = QTimer(self)
         timer.start(1000)
@@ -24,17 +24,24 @@ class MainWindow(QMainWindow):
         self.predict = False
         self.recording = np.empty(0)
         self.sampleRate = 48000
+        self.recordStart = False
 
     def buttonClicked(self):
-        self.timerStart = True
         self.seconds = self.duration
-        self.recording = recordAudio(self.sampleRate, self.duration, '/temp/')
+        self.ui.lcdOut.hide()
+        self.timerStart = True
+        self.recordStart = True
         self.predict = True
 
     def timeout(self):
-        if self.seconds > 0 and self.timerStart:
+        if self.recordStart:
+            self.ui.btnRecord.setText('Stops in...')
+            self.ui.lblMic.hide()
+            self.recording = recordAudio(self.sampleRate, self.duration, '/temp/')
+            self.recordStart = False
+        if self.seconds >= 0 and self.timerStart:
+            self.ui.lblCountDown.setText(str(self.seconds))
             self.seconds -= 1
-            self.ui.lcdOut.display(self.seconds)
         elif self.predict:
             self.timerStart = False
             self.predict = False
@@ -44,9 +51,13 @@ class MainWindow(QMainWindow):
             img = generateMelSpec('/temp/', '/temp/')
             model = createModel(100, 0.0002, 49)
             p = predict(model, img)
+            self.ui.lcdOut.show()
             if p == -1:
                 self.ui.lcdOut.display('F')
             self.ui.lcdOut.display(p)
+            self.ui.btnRecord.setText('Click to Record')
+            self.ui.lblCountDown.setText('')
+            self.ui.lblMic.show()
         else:
             self.timerStart = False
 

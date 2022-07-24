@@ -26,48 +26,13 @@
    <string>Spoken Digits</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>71</x>
-      <y>30</y>
-      <width>218</width>
-      <height>43</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;Spoken Digits&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="textFormat">
-     <enum>Qt::AutoText</enum>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>370</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;Prediction:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnRecord">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>270</y>
-      <width>80</width>
-      <height>50</height>
+      <x>100</x>
+      <y>301</y>
+      <width>300</width>
+      <height>65</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -78,14 +43,14 @@
     </property>
     <property name="minimumSize">
      <size>
-      <width>80</width>
-      <height>50</height>
+      <width>0</width>
+      <height>0</height>
      </size>
     </property>
     <property name="maximumSize">
      <size>
-      <width>80</width>
-      <height>50</height>
+      <width>540</width>
+      <height>960</height>
      </size>
     </property>
     <property name="baseSize">
@@ -93,6 +58,20 @@
       <width>0</width>
       <height>0</height>
      </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>SF Pro Rounded</family>
+      <pointsize>36</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+      <strikeout>false</strikeout>
+      <stylestrategy>PreferDefault</stylestrategy>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="toolTip">
      <string/>
@@ -103,8 +82,16 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background-color: rgba(255, 255, 255, 0)
+}
+QPushButton:pressed {
+	background-color: rgba(255, 255, 255, 0)
+}</string>
+    </property>
     <property name="text">
-     <string>Record</string>
+     <string>Click to Record</string>
     </property>
     <property name="iconSize">
      <size>
@@ -115,14 +102,20 @@
     <property name="shortcut">
      <string>R</string>
     </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
    </widget>
    <widget class="QLCDNumber" name="lcdOut">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>330</y>
-      <width>111</width>
-      <height>101</height>
+      <x>350</x>
+      <y>428</y>
+      <width>104</width>
+      <height>104</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -144,10 +137,16 @@
      <enum>QLCDNumber::Filled</enum>
     </property>
     <property name="value" stdset="0">
-     <double>0.000000000000000</double>
+     <double>8.000000000000000</double>
+    </property>
+    <property name="intValue" stdset="0">
+     <number>8</number>
     </property>
    </widget>
    <widget class="QLabel" name="lblBackground">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -163,11 +162,58 @@
      <pixmap>../code/UIBackground.png</pixmap>
     </property>
    </widget>
+   <widget class="QLabel" name="lblCountDown">
+    <property name="geometry">
+     <rect>
+      <x>413</x>
+      <y>309</y>
+      <width>40</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>SF Pro Rounded</family>
+      <pointsize>60</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0,0,0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblMic">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>414</x>
+      <y>311</y>
+      <width>36</width>
+      <height>46</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string notr="true"/>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="pixmap">
+     <pixmap>../code/mic.png</pixmap>
+    </property>
+   </widget>
    <zorder>lblBackground</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label</zorder>
    <zorder>btnRecord</zorder>
    <zorder>lcdOut</zorder>
+   <zorder>lblCountDown</zorder>
+   <zorder>lblMic</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
