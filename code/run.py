@@ -19,7 +19,7 @@ class MainWindow(QMainWindow):
         self.seconds = self.duration - 1
         timer = QTimer(self)
         timer.start(1000)
-        self.timerStart = False
+        self.timerOn = False
         timer.timeout.connect(self.timeout)
         self.predict = False
         self.recording = np.empty(0)
@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
     def buttonClicked(self):
         self.seconds = self.duration
         self.ui.lcdOut.hide()
-        self.timerStart = True
+        self.timerOn = True
         self.recordStart = True
         self.predict = True
 
@@ -39,11 +39,14 @@ class MainWindow(QMainWindow):
             self.ui.lblMic.hide()
             self.recording = recordAudio(self.sampleRate, self.duration, '/temp/')
             self.recordStart = False
-        if self.seconds >= 0 and self.timerStart:
+        if self.seconds > 0 and self.timerOn:
             self.ui.lblCountDown.setText(str(self.seconds))
             self.seconds -= 1
+        elif self.seconds == 0 and self.timerOn:
+            self.ui.lblCountDown.setText(str(self.seconds))
+            self.ui.btnRecord.setText('Predicting...')
+            self.timerOn = False
         elif self.predict:
-            self.timerStart = False
             self.predict = False
             write(os.path.join("./temp/orgOut.wav"), self.sampleRate, self.recording)
             print("Finished")
@@ -59,7 +62,7 @@ class MainWindow(QMainWindow):
             self.ui.lblCountDown.setText('')
             self.ui.lblMic.show()
         else:
-            self.timerStart = False
+            self.timerOn = False
 
 
 # Create the Qt Application
