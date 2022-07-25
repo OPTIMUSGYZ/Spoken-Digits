@@ -67,7 +67,7 @@
       <bold>true</bold>
       <strikeout>false</strikeout>
       <stylestrategy>PreferDefault</stylestrategy>
-      <kerning>true</kerning>
+      <kerning>false</kerning>
      </font>
     </property>
     <property name="focusPolicy">
@@ -84,10 +84,12 @@
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
-	background-color: rgba(255, 255, 255, 0)
+	background: transparent;
+	color: rgb(255, 255, 255);
 }
 QPushButton:pressed {
-	background-color: rgba(255, 255, 255, 0)
+	background: transparent;
+	color:rgba(255, 255, 255, 128);
 }</string>
     </property>
     <property name="text">
@@ -112,11 +114,17 @@ QPushButton:pressed {
    <widget class="QLCDNumber" name="lcdOut">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>428</y>
-      <width>104</width>
-      <height>104</height>
+      <x>351</x>
+      <y>429</y>
+      <width>102</width>
+      <height>102</height>
      </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(77, 77, 77);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
@@ -179,7 +187,7 @@ QPushButton:pressed {
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(0,0,0)</string>
+     <string notr="true">color: rgb(64, 64, 64)</string>
     </property>
     <property name="text">
      <string/>

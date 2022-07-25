@@ -45,24 +45,28 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setItalic(False)
         font.setStrikeOut(False)
-        font.setKerning(True)
+        font.setKerning(False)
         font.setStyleStrategy(QFont.PreferDefault)
         self.btnRecord.setFont(font)
         self.btnRecord.setFocusPolicy(Qt.NoFocus)
         self.btnRecord.setLayoutDirection(Qt.LeftToRight)
         self.btnRecord.setAutoFillBackground(False)
         self.btnRecord.setStyleSheet(u"QPushButton {\n"
-"	background-color: rgba(255, 255, 255, 0)\n"
+"	background: transparent;\n"
+"	color: rgb(255, 255, 255);\n"
 "}\n"
 "QPushButton:pressed {\n"
-"	background-color: rgba(255, 255, 255, 0)\n"
+"	background: transparent;\n"
+"	color:rgba(255, 255, 255, 128);\n"
 "}")
         self.btnRecord.setIconSize(QSize(0, 0))
         self.btnRecord.setAutoDefault(False)
         self.btnRecord.setFlat(False)
         self.lcdOut = QLCDNumber(self.centralwidget)
         self.lcdOut.setObjectName(u"lcdOut")
-        self.lcdOut.setGeometry(QRect(350, 428, 104, 104))
+        self.lcdOut.setGeometry(QRect(351, 429, 102, 102))
+        self.lcdOut.setAutoFillBackground(False)
+        self.lcdOut.setStyleSheet(u"background-color:rgb(77, 77, 77);")
         self.lcdOut.setFrameShape(QFrame.NoFrame)
         self.lcdOut.setFrameShadow(QFrame.Plain)
         self.lcdOut.setSmallDecimalPoint(False)
@@ -84,7 +88,7 @@ class Ui_MainWindow(object):
         font1.setPointSize(60)
         font1.setBold(True)
         self.lblCountDown.setFont(font1)
-        self.lblCountDown.setStyleSheet(u"color: rgb(0,0,0)")
+        self.lblCountDown.setStyleSheet(u"color: rgb(64, 64, 64)")
         self.lblCountDown.setAlignment(Qt.AlignCenter)
         self.lblMic = QLabel(self.centralwidget)
         self.lblMic.setObjectName(u"lblMic")

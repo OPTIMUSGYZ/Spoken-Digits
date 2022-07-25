@@ -25,10 +25,11 @@ class MainWindow(QMainWindow):
         self.recording = np.empty(0)
         self.sampleRate = 48000
         self.recordStart = False
+        self.ui.lcdOut.display('')
 
     def buttonClicked(self):
         self.seconds = self.duration
-        self.ui.lcdOut.hide()
+        self.ui.lcdOut.display('')
         self.timerOn = True
         self.recordStart = True
         self.predict = True
@@ -54,7 +55,7 @@ class MainWindow(QMainWindow):
             img = generateMelSpec('/temp/', '/temp/')
             model = createModel(100, 0.0002, 49)
             p = predict(model, img)
-            self.ui.lcdOut.show()
+            # self.ui.lcdOut.show()
             if p == -1:
                 self.ui.lcdOut.display('F')
             self.ui.lcdOut.display(p)
