@@ -248,6 +248,9 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
         train_loss.append(float(total_train_loss) / n)
         val_loss.append(evaluate(model, val_loader, criterion, use_cuda, use_metal))
 
+        #Reset counter
+        n = 0
+
         train_acc.append(get_accuracy(model, train_loader, use_cuda, use_metal))  # compute training accuracy
         val_acc.append(get_accuracy(model, val_loader, use_cuda, use_metal))  # compute validation accuracy
 
