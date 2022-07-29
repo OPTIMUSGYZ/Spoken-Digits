@@ -139,3 +139,4 @@ dmypy.json
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/Spoken-Digits 2.iml
 /.idea/workspace 2.xml
+.DS_Store
