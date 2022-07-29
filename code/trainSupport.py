@@ -213,6 +213,7 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
 
     # training
     n = 0  # the number of iterations
+    count=0
     start_time = time.time()
 
     for ep in range(num_epochs):
@@ -243,13 +244,14 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
 
             total_train_loss += loss.item()
             n += 1
+            count+=1
 
         # Compute the train and validation losses
-        train_loss.append(float(total_train_loss) /(imgs+1))
+        train_loss.append(float(total_train_loss) / count )
         val_loss.append(evaluate(model, val_loader, criterion, use_cuda, use_metal))
 
         #Reset counter
-        #n = 0
+        count = 0
 
         train_acc.append(get_accuracy(model, train_loader, use_cuda, use_metal))  # compute training accuracy
         val_acc.append(get_accuracy(model, val_loader, use_cuda, use_metal))  # compute validation accuracy
