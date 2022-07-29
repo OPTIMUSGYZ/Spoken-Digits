@@ -217,7 +217,7 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
 
     for ep in range(num_epochs):
         total_train_loss = 0
-        for imgs, labels in iter(train_loader):
+        for imgs, labels in enumerate(train_loader, 0):
 
             #############################################
             # To Enable GPU Usage
@@ -245,11 +245,11 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
             n += 1
 
         # Compute the train and validation losses
-        train_loss.append(float(total_train_loss) / n)
+        train_loss.append(float(total_train_loss) /(imgs+1))
         val_loss.append(evaluate(model, val_loader, criterion, use_cuda, use_metal))
 
         #Reset counter
-        n = 0
+        #n = 0
 
         train_acc.append(get_accuracy(model, train_loader, use_cuda, use_metal))  # compute training accuracy
         val_acc.append(get_accuracy(model, val_loader, use_cuda, use_metal))  # compute validation accuracy
