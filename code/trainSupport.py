@@ -32,6 +32,7 @@ def get_accuracy(model, dataloader, use_cuda, use_metal):
     correct = 0
     total = 0
     for imgs, labels in dataloader:
+
         #############################################
         # To Enable GPU Usage
         if use_cuda and torch.cuda.is_available():
@@ -165,22 +166,21 @@ def evaluate(net, loader, criterion, use_cuda, use_metal):
          loss: A scalar for the average loss function over the validation set
      """
     total_loss = 0.0
-    total_epoch = 0
-    for i, data in enumerate(loader, 0):
-        inputs, labels = data
+    i = 0
+    for inputs, labels in iter(loader):
         if use_cuda and torch.cuda.is_available():
             inputs = inputs.cuda()
             labels = labels.cuda()
         if use_metal and torch.backends.mps.is_available():
             inputs = inputs.to('mps')
             labels = labels.to('mps')
-        labels = torch.Tensor(labels)
-        labels = normalize_label(labels)  # Convert labels to 0/1
+        """labels = torch.Tensor(labels)
+        labels = normalize_label(labels)  # Convert labels to 0/1"""
         outputs = net(inputs)
         loss = criterion(outputs, labels)
         total_loss += loss.item()
-        total_epoch += len(labels)
-    loss = float(total_loss) / (i + 1)
+        i += 1
+    loss = float(total_loss) / i
     return loss
 
 
@@ -200,25 +200,23 @@ def normalize_label(labels):
 
 
 def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30, use_cuda=False, use_metal=False):
-    torch.manual_seed(1)  # set the random seed
-    train_loader = torch.utils.data.DataLoader(train_data, batch_size=bs, shuffle=False)
-    val_loader = torch.utils.data.DataLoader(val_data, batch_size=bs, shuffle=False)
+    torch.manual_seed(1000)  # set a random seed
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=bs)
+    val_loader = torch.utils.data.DataLoader(val_data, batch_size=bs)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9)
-
-    torch.manual_seed(1000)
 
     iters, losses, train_acc, val_acc, train_loss, val_loss = [], [], [], [], [], []
     epochs = range(num_epochs)
 
     # training
     n = 0  # the number of iterations
-    count=0
     start_time = time.time()
 
     for ep in range(num_epochs):
-        total_train_loss = 0
-        for imgs, labels in enumerate(train_loader, 0):
+        total_train_loss = 0.0
+        i = 0
+        for imgs, labels in iter(train_loader):
 
             #############################################
             # To Enable GPU Usage
@@ -244,15 +242,11 @@ def train(model, train_data, val_data, bs=10, learning_rate=0.01, num_epochs=30,
 
             total_train_loss += loss.item()
             n += 1
-            count+=1
+            i += 1
 
         # Compute the train and validation losses
-        train_loss.append(float(total_train_loss) / count )
+        train_loss.append(float(total_train_loss) / i)
         val_loss.append(evaluate(model, val_loader, criterion, use_cuda, use_metal))
-
-        #Reset counter
-        count = 0
-
         train_acc.append(get_accuracy(model, train_loader, use_cuda, use_metal))  # compute training accuracy
         val_acc.append(get_accuracy(model, val_loader, use_cuda, use_metal))  # compute validation accuracy
 

@@ -51,5 +51,5 @@ def load_test_data_loader():
                                          transforms.ToTensor()])  # Convert jpeg to tensor
     test_data = datasets.ImageFolder(test_dir, data_transform)
     print('Number of test images: ', len(test_data))
-    test_loader = torch.utils.data.DataLoader(test_data, batch_size=1)
+    test_loader = torch.utils.data.DataLoader(test_data)
     return test_loader
