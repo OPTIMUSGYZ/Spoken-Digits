@@ -66,7 +66,6 @@ class Ui_MainWindow(object):
         self.lcdOut.setObjectName(u"lcdOut")
         self.lcdOut.setGeometry(QRect(351, 429, 102, 102))
         self.lcdOut.setAutoFillBackground(False)
-        self.lcdOut.setStyleSheet(u"background-color:rgb(77, 77, 77);")
         self.lcdOut.setFrameShape(QFrame.NoFrame)
         self.lcdOut.setFrameShadow(QFrame.Plain)
         self.lcdOut.setSmallDecimalPoint(False)

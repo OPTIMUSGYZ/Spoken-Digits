@@ -45,7 +45,7 @@ def get_accuracy(model, dataloader, use_cuda, use_metal):
 
 
 # This function also calculates the accuracy for each letter
-def get_each_accuracy(model, dataloader):
+def get_each_accuracy(model, dataloader, use_cuda=False, use_metal=False):
     Zero_correct = 0
     Zero_total = 0
     One_correct = 0
@@ -72,7 +72,12 @@ def get_each_accuracy(model, dataloader):
     classes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
     for imgs, labels in dataloader:
-
+        if use_cuda and torch.cuda.is_available():
+            imgs = imgs.cuda()
+            labels = labels.cuda()
+        if use_metal and torch.backends.mps.is_available():
+            imgs = imgs.to('mps')
+            labels = labels.to('mps')
         output = model(imgs)
 
         # select index with maximum prediction score
@@ -300,11 +305,18 @@ def start_training(bs, l_r, ep, use_cuda=False, use_metal=False):
     train(CNN, train_data, val_data, bs, l_r, ep, use_cuda, use_metal)
 
 
-def show_model_test_accuracy(bs, l_r, ep):
+def show_model_test_accuracy(bs, l_r, ep, use_cuda=False, use_metal=False):
     model = CNN_Model.CNN_Spoken_Digit()
     model_path = "./models/state_dict/" + str(get_model_name(model.name, bs, l_r, ep))
-    state = torch.load(model_path)
+    state = torch.load(model_path, map_location=torch.device('cpu'))
     model.load_state_dict(state)
+    if use_cuda and torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        model.cuda()
+        print("Testing on GPU...")
+    if use_metal and torch.backends.mps.is_available():
+        model.to('mps')
+        print("Testing using Metal")
     test_loader = data_loading.load_test_data_loader()
-    acc = get_each_accuracy(model, test_loader)
+    acc = get_each_accuracy(model, test_loader, use_cuda, use_metal)
     print("{} with bs={} lr={} epoch={} test accuracy: {}".format(model.name, bs, l_r, ep, acc))

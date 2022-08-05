@@ -1,9 +1,9 @@
 from trainSupport import start_training, show_model_test_accuracy
 
 #################
-train_mode = True
-use_cuda = True
-use_metal = False
+train_mode = False
+use_cuda = False
+use_metal = True
 #################
 
 
@@ -12,4 +12,4 @@ lr = 0.0002
 epoch = 50
 if train_mode:
     start_training(batch_size, lr, epoch, use_cuda, use_metal)
-show_model_test_accuracy(batch_size, lr, epoch - 1)  # default load to last epoch
+show_model_test_accuracy(batch_size, lr, epoch - 1, use_cuda, use_metal)  # default load to last epoch
